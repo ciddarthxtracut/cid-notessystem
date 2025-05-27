@@ -39,9 +39,8 @@ export const useUserStore = create((set, get) => ({
   updateNote: (updatedNote) => {
     const { user, notes } = get();
     if (!user) return;
-
     const newNotes = notes.map(note =>
-      note.id === updatedNote.id ? updatedNote : note
+      note.id === updatedNote.id ? { ...updatedNote, modifiedAt: new Date().toISOString() } : note
     );
     localStorage.setItem(`notes_${user.username}`, JSON.stringify(newNotes));
     set({ notes: newNotes });

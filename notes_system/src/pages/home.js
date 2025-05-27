@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useUserStore } from "../store";
 import { useNavigate, Link } from "react-router-dom";
+import Model from "../component/model";
+import "../component/model.css";
 
 export default function Home() {
   const user = useUserStore((state) => state.user);
@@ -10,9 +12,8 @@ export default function Home() {
   const addNote = useUserStore((state) => state.addNote);
   const updateNote = useUserStore((state) => state.updateNote);
   const deleteNote = useUserStore((state) => state.deleteNote);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
   const [editingNote, setEditingNote] = useState(null);
   const [noteTitle, setNoteTitle] = useState("");
   const [noteContent, setNoteContent] = useState("");
@@ -33,6 +34,7 @@ export default function Home() {
     setEditingNote(null);
     setNoteTitle("");
     setNoteContent("");
+    setIsModalOpen(false);
   };
 
   const handleSubmit = (e) => {
@@ -44,12 +46,13 @@ export default function Home() {
     }
 
     if (editingNote) {
-      updateNote({ id: editingNote.id, title: noteTitle, content: noteContent });
+      updateNote({ id: editingNote.id, title: noteTitle, content: noteContent , modifiedAt: new Date().toISOString()  });
     } else {
         const newNote = {
             id: Date.now(),
             title: noteTitle,
             content: noteContent,
+            modifiedAt: new Date().toISOString(),
         };
       addNote(newNote);
     }
@@ -61,6 +64,7 @@ export default function Home() {
         setEditingNote(note);
         setNoteTitle(note.title);
         setNoteContent(note.content);
+        setIsModalOpen(true);
   };
 
   const handleDelete = (id) => {
@@ -75,34 +79,42 @@ export default function Home() {
   };
 
   return (
-    <div>
-      <h1>Hello {user.name}</h1>
-      <button onClick={handleLogout}>Logout </button>
+    <div className="">
+        <div className="body-container-1">
+            <h1>Hello {user.name}</h1>
+            <button onClick={() => setIsModalOpen(true)}>{editingNote ? "Edit Note" : "Add Note"}</button>
+            <button onClick={handleLogout}>Logout </button>
+        </div>
+        <div className="body-container-2">
+            <h2>Your Notes Please!</h2>
+            {notes.length === 0 && <p> No notes yet. Add one below!</p>}
+        </div>
 
-      <h2>Your Notes Please!</h2>
+        <ul style={{ display: "flex" , gap: "30px" , flexWrap: "wrap"}}>
+            {notes.map(note => (
+            <li key={note.id} style={{border: "1px solid gray", marginBottom: 10, padding: 10 , width: 250 , background: "#A1CCD2"}}>
+                <h3>{note.title}</h3>
+                <p>{note.content}</p>
+                <button onClick={() => handleEdit(note)}>Edit</button>{" "}
+                <button onClick={() => handleDelete(note.id)}>Delete</button>
+                <div className="modified-time">
+                    {note.modifiedAt && ( <p>Last Modified: {new Date(note.modifiedAt).toLocaleString()}</p>)}
+                </div>
+            </li>
+            ))}
+        </ul>
 
-      {notes.length === 0 && <p> No notes yet. Add one below!</p>}
-
-      <ul>
-        {notes.map(note => (
-          <li key={note.id} style={{border: "1px solid gray", marginBottom: 10, padding: 10}}>
-            <h3>{note.title}</h3>
-            <p>{note.content}</p>
-            <button onClick={() => handleEdit(note)}>Edit</button>{" "}
-            <button onClick={() => handleDelete(note.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-
-      <h2>{editingNote ? "Edit Note" : "Add Note"}</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Title"value={noteTitle} onChange={e => setNoteTitle(e.target.value)} required />
-        <br />
-        <textarea placeholder="Content" value={noteContent} onChange={e => setNoteContent(e.target.value)} required/>
-        <br />
-        <button type="submit">{editingNote ? "Update" : "Add"}</button>
-        {editingNote && <button type="button" onClick={resetForm}>Cancel</button>}
-      </form>
-    </div>
+        <Model isOpen={isModalOpen} onClose={resetForm}>
+        <h2>{editingNote ? "Edit Note" : "Add Note"}</h2>
+        <form onSubmit={handleSubmit}>
+            <input type="text" placeholder="Title" value={noteTitle} onChange={e => setNoteTitle(e.target.value)} required/><br />
+            <textarea placeholder="Content" value={noteContent} onChange={e => setNoteContent(e.target.value)} required /><br />
+            <div>
+                <button type="submit">{editingNote ? "Update" : "Add"}</button>
+                <button type="button" onClick={resetForm} style={{ marginLeft: "20px" }}>Cancel</button>
+            </div>
+        </form>
+        </Model>
+        </div>
   );
 }

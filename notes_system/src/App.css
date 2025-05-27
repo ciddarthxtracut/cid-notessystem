@@ -1,13 +1,17 @@
-
 h1{
   color: #5D473D;
+  animation: slideFade 1s ease-out forwards;
 }
-input{
+h2{
+  animation: slideFade 1s ease-out forwards;
+}
+input , textarea{
   margin: 10px;
   padding: 5px;
   border: 1px solid #6b4141;
   border-radius: 20px;
-  width: 200px;
+  width: auto;
+  animation: slideFade 1s ease-out forwards;
 }
 button{
   background-color: #EAB384;
@@ -15,6 +19,8 @@ button{
   width: 100px;
   border-radius: 20px;
   border: none;
+  height: fit-content;
+  animation: slideFade 1s ease-out forwards;
 }
 button:hover{
   background-color: #6b4141;
@@ -26,6 +32,10 @@ button:hover{
 }
 a{
   font-size: 14px;
+  animation: slideFade 1s ease-out forwards;
+}
+ul{
+  animation: slideFade 1s ease-out forwards;
 }
 input::placeholder {
   font-size: 10px;
@@ -33,6 +43,19 @@ input::placeholder {
 form{
   display: flex;
   flex-direction: column;
+}
+.breadcrumbs {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #F4F1DE;
+  color: #333;
+}
+.breadcrumbs a {
+  text-decoration: none;
+  color: #007bff;
+}
+.breadcrumbs span {
+  color: #555;
 }
 .body-container{
     background-color: #F4F1DE;
@@ -53,4 +76,27 @@ form{
   justify-content: center;
   height: 90vh;
   align-items: center;
+}
+.body-container-1{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.body-container-2{
+  text-align: center;
+}
+.modified-time p{
+  font-size: 12px;
+  text-align: right;
+}
+@keyframes slideFade {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
