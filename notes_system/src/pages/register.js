@@ -42,18 +42,20 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <h1>Register here</h1>
-      <form id="registerForm" onSubmit={handleSubmit}>
-        <input type="text" placeholder="Name"id="name" value={name} onChange={(e) => setName(e.target.value)} required/>
-        <input type="text" placeholder="Username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required/>
-        <input type="password" placeholder="Password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-        <input type="password" placeholder="Confirm Password" id="confirmpassword" value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
-        <button type="submit" id="register-btn">
-          Register
-        </button>
-        &nbsp; <Link to="/login">Login</Link>
-      </form>
+    <div className="body-container">
+        <section className="login">
+            <h1>Register here</h1>
+            <form id="registerForm" onSubmit={handleSubmit}>
+                <input type="text" placeholder="Name"id="name" value={name} onChange={(e) => setName(e.target.value)} required/>
+                <input type="text" placeholder="Username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required/>
+                <input type="password" placeholder="Password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
+                <input type="password" placeholder="Confirm Password" id="confirmpassword" value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} required/><br/>
+                <div>
+                    <button type="submit" id="register-btn">Register</button>
+                    &nbsp; <Link to="/login">Login</Link>
+                </div>
+            </form>
+        </section>
     </div>
   );
 }

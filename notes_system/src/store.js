@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 
 export const useUserStore = create((set, get) => ({
   user: null,
@@ -46,7 +46,7 @@ export const useUserStore = create((set, get) => ({
     localStorage.setItem(`notes_${user.username}`, JSON.stringify(newNotes));
     set({ notes: newNotes });
   },
-  
+
   deleteNote: (id) => {
     const { user, notes } = get();
     if (!user) return;
